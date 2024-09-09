@@ -10,6 +10,11 @@ Easy Auth is really simple to setup however it can be confusing as to how to get
 ## Scenarios
 
 ### Managed Identity -> Container Apps
+
+![Azure Container Apps Auth Config](aca-auth-config.png)
+
+![Managed Identity Information](mi-id-info.png)
+
 ```
 import os
 import requests
@@ -35,6 +40,7 @@ print(resp.text)
 
 
 ### Service Principal -> Logic App (Standard) 
+```
 token_request_data = {
    'client_id': '<CLIENT_ID>',
    'scope': ['api://<APPREG_CLIENTID>/.default'],
@@ -43,6 +49,8 @@ token_request_data = {
 }
 
 token_resp = requests.post("https://login.microsoftonline.com/<TENANTID>/oauth2/v2.0/token", data=token_request_data )
+```
+
 
 ## Bonus!
 
