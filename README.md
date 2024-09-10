@@ -20,7 +20,7 @@ Where the **Application (client) ID** is the App registration client id.
 
 For **Allowed token audiences**, you will list out the Application (client) ID or it could be `api://<client-id>` depending on how you are getting the token. Check [jwt.ms](https://jwt.ms) and look for the `aud` value
 
-Under **Aditional Checks**, if you want to allow a managed identity to connect, then select **Allow requests from specific client applications** and list the Application (client) ID and also the client id of the managed identity. 
+Under **Additional Checks**, if you want to allow a managed identity to connect, then select `Allow requests from specific client applications` and list the Application (client) ID and also the client id of the managed identity. 
 
 You can find the client id of the user assigned managed identity by going to the Managed Identity overview page like below.
 
