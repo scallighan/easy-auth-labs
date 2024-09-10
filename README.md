@@ -7,6 +7,33 @@ Easy Auth is really simple to setup however it can be confusing as to how to get
 
 ## Easy Auth Setup
 
+## The App Registration
+The core for any Easy Auth setup is having an App Registration. 
+
+### Authentication
+
+![sample app reg authentication page](app-reg-authentication.png)
+
+If you are allowing an interactive users login, add the redirect URIs. For an Azure Container App that would be `<container app application url>/.auth/login/aad/callback`
+
+If you would like to have a user interactively login also check the `ID tokens (used for implicit and hybrid flows)` checkbox
+
+
+
+### Certificates & secrets
+
+Create a client secret and save the value into a key vault.
+
+### Expose an API
+
+![sample app reg expose an api page](app-reg-expose-api.png)
+
+For **Application ID URI** the common pattern is to use the value `api://<app reg client id>`
+
+Then add a scope, something like `user_impersonation` or `Something.Read` and make sure that **State** is `Enabled`
+
+
+
 ## Scenarios
 
 ### Managed Identity -> Container Apps
@@ -29,6 +56,8 @@ You can find the client id of the user assigned managed identity by going to the
 If you are using a System Assigned identity, then navigate to "Enterprise applications" and search the list on the object (principal) ID shown on the System assigned identity tab. Then use the value in the "Application ID" column
 
 ![Enterprise app page, searching on a system assigned identity](enterprise-app-system-assigned-id.png)
+
+If you want to limit only certain managed identities to have access, you can select `Allow requests from specific identities` and use the **Object (principal) ID** of the managed identities in the list. 
 
 Below is a code snippet on how to use the Managed Identity to call the Easy Auth enabled endpoint.
 
