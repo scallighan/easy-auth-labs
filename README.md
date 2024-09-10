@@ -18,7 +18,7 @@ If you are allowing an interactive users login, add the redirect URIs. For an Az
 
 If you would like to have a user interactively login also check the `ID tokens (used for implicit and hybrid flows)` checkbox
 
-
+> If you are only wanting something like managed identities to connect then ***uncheck*** `ID tokens (used for implicit and hybrid flows)`
 
 ### Certificates & secrets
 
@@ -31,8 +31,6 @@ Create a client secret and save the value into a key vault.
 For **Application ID URI** the common pattern is to use the value `api://<app reg client id>`
 
 Then add a scope, something like `user_impersonation` or `Something.Read` and make sure that **State** is `Enabled`
-
-
 
 ## Scenarios
 
@@ -83,9 +81,20 @@ print(resp.text)
 
 ### Logic App (Consumption) -> Function App
 
+![Function App Auth settings example](functionapp-auth.png)
 
+![Function App allowed Client ID list](functionapp-allowed-clientid.png)
 
-### Service Principal -> Logic App (Standard) 
+![Logic App Managed Identity settings example](logicapp-mi-settings.png)
+
+On the logic app side, configure the **Advanced parameters -> Authentication** section and specify the app registration application (client) ID ad the Audience.
+
+### Service Principal -> Logic App (Standard)
+
+Fill out the Logic App Authentication portion similar to the container app or function app.
+
+Code snippet on how to get a token:
+
 ```
 token_request_data = {
    'client_id': '<CLIENT_ID>',
@@ -97,6 +106,7 @@ token_request_data = {
 token_resp = requests.post("https://login.microsoftonline.com/<TENANTID>/oauth2/v2.0/token", data=token_request_data )
 ```
 
+Then use the access_token to call the logic app endpoint.
 
 ## Bonus!
 
