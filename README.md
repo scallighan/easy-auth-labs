@@ -11,9 +11,26 @@ Easy Auth is really simple to setup however it can be confusing as to how to get
 
 ### Managed Identity -> Container Apps
 
+Image from the Azure Container Apps Authorization page:
 ![Azure Container Apps Auth Config](aca-auth-config.png)
 
+Where the **Application (client) ID** is the App registration client id.
+
+**Issuer URL** is `https://login.microsoftonline.com/<TENANT-ID>/v2.0`
+
+For **Allowed token audiences**, you will list out the Application (client) ID or it could be `api://<client-id>` depending on how you are getting the token. Check [jwt.ms](https://jwt.ms) and look for the `aud` value
+
+Under **Aditional Checks**, if you want to allow a managed identity to connect, then select **Allow requests from specific client applications** and list the Application (client) ID and also the client id of the managed identity. 
+
+You can find the client id of the user assigned managed identity by going to the Managed Identity overview page like below.
+
 ![Managed Identity Information](mi-id-info.png)
+
+If you are using a System Assigned identity, then navigate to "Enterprise applications" and search the list on the object (principal) ID shown on the System assigned identity tab. Then use the value in the "Application ID" column
+
+![Enterprise app page, searching on a system assigned identity](enterprise-app-system-assigned-id.png)
+
+Below is a code snippet on how to use the Managed Identity to call the Easy Auth enabled endpoint.
 
 ```
 import os
