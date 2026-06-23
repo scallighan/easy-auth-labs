@@ -1,0 +1,50 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "HTTP_1": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "https://$FUNCTION_NAME.azurewebsites.net/www/HttpExample",
+                    "method": "GET",
+                    "authentication": {
+                        "type": "ManagedServiceIdentity",
+                        "identity": "$MI_ID",
+                        "audience": "$CLIENT_ID"
+                    }
+                },
+                "runAfter": {},
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                }
+            },
+            "Response": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "body": "@{outputs('HTTP_1')?['statusCode']}\n---\n@{outputs('HTTP_1')?['headers']}\n---\n@{body('HTTP_1')}"
+                },
+                "runAfter": {
+                    "HTTP_1": [
+                        "SUCCEEDED",
+                        "FAILED",
+                        "TIMEDOUT",
+                        "SKIPPED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_an_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http"
+            }
+        }
+    },
+    "kind": "Stateful"
+}
